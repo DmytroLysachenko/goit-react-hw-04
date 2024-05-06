@@ -1,0 +1,13 @@
+.btn {
+  outline: none;
+  box-shadow: none;
+  background-color: seashell;
+  border: solid 1px gray;
+  border-radius: 5px;
+  &:active {
+    box-shadow: gainsboro 1px 1px 1px 1px;
+  }
+  &:hover {
+    background-color: antiquewhite;
+  }
+}

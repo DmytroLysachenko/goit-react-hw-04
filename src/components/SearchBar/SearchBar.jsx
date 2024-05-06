@@ -1,14 +1,12 @@
-import { Field, Form, Formik, formik } from "formik";
+import { Field, Form, Formik } from "formik";
 
-export const SearchBar = ({ setQuery, setPage }) => {
+export const SearchBar = ({ handleSetQuery }) => {
   return (
     <header>
       <Formik
         initialValues={{ query: "" }}
         onSubmit={(values) => {
-          setQuery(values.query);
-          formik.resetForm();
-          setPage(1);
+          handleSetQuery(values.query);
         }}
       >
         <Form>

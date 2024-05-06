@@ -4,7 +4,7 @@ import { LoadMoreBtn } from "./LoadMoreBtn/LoadMoreBtn";
 import { Loader } from "./Loader/Loader";
 import { SearchBar } from "./SearchBar/SearchBar";
 import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
-import axios from "axios";
+import { fetchImages, fetchImagesByQuery } from "../api/api";
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,12 +15,14 @@ export const App = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const fetchImages = async (params) => {
+    const getImages = async () => {
       try {
         setIsLoading(true);
-        axios.defaults.baseURL = "https://api.unsplash.co";
-        const { data } = await axios.get("/search/photos", { params });
-        setImages(data.results);
+        setError(false);
+        const { data } = query
+          ? await fetchImagesByQuery({ page, query })
+          : await fetchImages({ page, query });
+        setImages((prev) => ({ ...prev, ...data.results }));
         setTotal(data.total);
         setPage((prev) => prev++);
       } catch (error) {
@@ -29,19 +31,17 @@ export const App = () => {
         setIsLoading(false);
       }
     };
-    const params = {
-      client_id: "uRwnyKgvBa0sMtoApVB0PJKflYAaPP8L2ItDpFfPbL4",
-      orientation: "landscape",
-      page,
-      query,
-    };
 
-    fetchImages(params);
+    getImages();
   }, [query, page]);
-
+  const handleSetQuery = (query) => {
+    setQuery(query);
+    setImages([]);
+    setPage(1);
+  };
   return (
     <>
-      <SearchBar setQuery={setQuery} setPage={setPage} />
+      <SearchBar handleSetQuery={handleSetQuery} />
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
       {images.length > 0 ? (
@@ -49,7 +49,7 @@ export const App = () => {
       ) : (
         <p>Unfortunately no images found by your request</p>
       )}
-      {Math.ceil(total / 10) < page && <LoadMoreBtn />}
+      {Math.ceil(total / 10) < page && <LoadMoreBtn setPage={setPage} />}
     </>
   );
 };
