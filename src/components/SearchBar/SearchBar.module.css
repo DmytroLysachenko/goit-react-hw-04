@@ -1,0 +1,27 @@
+.header {
+  background-color: lightseagreen;
+  display: grid;
+  justify-content: center;
+  padding: 10px;
+}
+.form {
+  position: relative;
+}
+.input {
+  padding: 5px 5px 5px 25px;
+}
+.button {
+  border: none;
+  display: block;
+  border-radius: 50%;
+  background: none;
+  position: absolute;
+  left: 5px;
+  top: 7px;
+  &:hover {
+    background-color: whitesmoke;
+  }
+  &:active {
+    background-color: silver;
+  }
+}

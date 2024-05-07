@@ -1,9 +1,13 @@
 .btn {
+  width: 20%;
+  display: block;
   outline: none;
   box-shadow: none;
   background-color: seashell;
   border: solid 1px gray;
   border-radius: 5px;
+  padding: 5px 10px;
+  margin: 0 auto;
   &:active {
     box-shadow: gainsboro 1px 1px 1px 1px;
   }

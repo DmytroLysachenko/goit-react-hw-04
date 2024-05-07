@@ -4,7 +4,8 @@ import { LoadMoreBtn } from "./LoadMoreBtn/LoadMoreBtn";
 import { Loader } from "./Loader/Loader";
 import { SearchBar } from "./SearchBar/SearchBar";
 import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
-import { fetchImages, fetchImagesByQuery } from "../api/api";
+import { fetchImagesByQuery } from "../api/api";
+import { ImageModal } from "./ImageModal/ImageModal";
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,43 +14,51 @@ export const App = () => {
   const [query, setQuery] = useState("");
   const [images, setImages] = useState([]);
   const [total, setTotal] = useState(0);
+  const [largeImg, setLargeImg] = useState("");
 
   useEffect(() => {
     const getImages = async () => {
       try {
         setIsLoading(true);
         setError(false);
-        const { data } = query
-          ? await fetchImagesByQuery({ page, query })
-          : await fetchImages({ page, query });
-        setImages((prev) => ({ ...prev, ...data.results }));
+        const { data } = query && (await fetchImagesByQuery({ page, query }));
+        setImages((prev) => [...prev, ...data.results]);
         setTotal(data.total);
-        setPage((prev) => prev++);
       } catch (error) {
         setError(true);
       } finally {
         setIsLoading(false);
       }
     };
-
-    getImages();
+    query && getImages();
   }, [query, page]);
+
   const handleSetQuery = (query) => {
     setQuery(query);
     setImages([]);
     setPage(1);
   };
+
+  const handleClickLoadMore = () => {
+    setPage((prev) => prev + 1);
+  };
+
+  const handleClickImage = (src) => {
+    setLargeImg(src);
+  };
+
   return (
     <>
       <SearchBar handleSetQuery={handleSetQuery} />
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
-      {images.length > 0 ? (
-        <ImageGallery />
-      ) : (
-        <p>Unfortunately no images found by your request</p>
+      {images.length > 0 && (
+        <ImageGallery images={images} onClickImage={handleClickImage} />
       )}
-      {Math.ceil(total / 10) < page && <LoadMoreBtn setPage={setPage} />}
+      {largeImg && <ImageModal src={largeImg} />}
+      {Math.ceil(total / 10) > page && (
+        <LoadMoreBtn onClick={handleClickLoadMore} />
+      )}
     </>
   );
 };

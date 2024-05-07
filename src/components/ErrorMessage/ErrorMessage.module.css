@@ -1,0 +1,8 @@
+.error {
+  width: fit-content;
+  background-color: peachpuff;
+  border-radius: 5px;
+  border: solid salmon 1px;
+  margin: 30px auto;
+  padding: 10px 10px;
+}
