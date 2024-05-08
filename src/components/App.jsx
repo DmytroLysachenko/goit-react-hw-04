@@ -43,8 +43,31 @@ export const App = () => {
     setPage((prev) => prev + 1);
   };
 
-  const handleClickImage = (src) => {
+  const onEscClose = (event) => {
+    if (event.key === "Escape") {
+      setLargeImg("");
+      window.removeEventListener("keydown", onEscClose);
+      document.body.removeEventListener("click", closeModalBackdrop);
+    }
+  };
+  const closeModalBackdrop = (event) => {
+    if (event.target.id === "backdrop") {
+      setLargeImg("");
+      window.removeEventListener("keydown", onEscClose);
+      document.body.removeEventListener("click", closeModalBackdrop);
+    }
+  };
+  const closeModalBtn = (event) => {
+    if (event.currentTarget.id === "close-btn") {
+      setLargeImg("");
+      window.removeEventListener("keydown", onEscClose);
+      document.body.removeEventListener("click", closeModalBackdrop);
+    }
+  };
+  const openModal = (src) => {
     setLargeImg(src);
+    window.addEventListener("keydown", onEscClose);
+    document.body.addEventListener("click", closeModalBackdrop);
   };
 
   return (
@@ -53,9 +76,9 @@ export const App = () => {
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
       {images.length > 0 && (
-        <ImageGallery images={images} onClickImage={handleClickImage} />
+        <ImageGallery images={images} onClickImage={openModal} />
       )}
-      {largeImg && <ImageModal src={largeImg} />}
+      {largeImg && <ImageModal src={largeImg} closeModalBtn={closeModalBtn} />}
       {Math.ceil(total / 10) > page && (
         <LoadMoreBtn onClick={handleClickLoadMore} />
       )}

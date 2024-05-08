@@ -7,7 +7,6 @@ export const fetchImagesByQuery = async (configParams) => {
     params: {
       per_page: 12,
       client_id: "uRwnyKgvBa0sMtoApVB0PJKflYAaPP8L2ItDpFfPbL4",
-      orientation: "landscape",
       ...configParams,
     },
   });
