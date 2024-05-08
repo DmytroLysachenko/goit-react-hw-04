@@ -7,7 +7,6 @@ import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
 import { fetchImagesByQuery } from "../api/api";
 import { ImageModal } from "./ImageModal/ImageModal";
 import { ToastContainer, toast } from "react-toastify";
-import Modal from "react-modal";
 import "react-toastify/dist/ReactToastify.css";
 
 export const App = () => {
@@ -16,9 +15,9 @@ export const App = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [images, setImages] = useState([]);
-  const [img, setImg] = useState({});
   const [total, setTotal] = useState(0);
   const [largeImg, setLargeImg] = useState("");
+  const [desc, setDesc] = useState("");
 
   useEffect(() => {
     const getImages = async () => {
@@ -63,30 +62,15 @@ export const App = () => {
   const openModal = () => {
     setIsOpen(true);
   };
-  const onClickImage = (src, auth, desc, likes) => {
+  const onClickImage = (src, desc) => {
     setLargeImg(src);
-    setImg({ auth, desc, likes });
+    setDesc(desc);
     openModal();
   };
 
   const closeModal = () => {
     setIsOpen(false);
     setLargeImg("");
-  };
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      display: "flex",
-      "justify-content": "center",
-      "max-height": "90%",
-      "max-width": "90%",
-    },
   };
 
   return (
@@ -98,15 +82,12 @@ export const App = () => {
         <ImageGallery images={images} onClickImage={onClickImage} />
       )}
       {largeImg && (
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          contentLabel="Example Modal"
-          style={customStyles}
-        >
-          {" "}
-          <ImageModal img={img} src={largeImg} closeModal={closeModal} />{" "}
-        </Modal>
+        <ImageModal
+          src={largeImg}
+          desc={desc}
+          closeModal={closeModal}
+          modalIsOpen={modalIsOpen}
+        />
       )}
       {Math.ceil(total / 10) > page && (
         <LoadMoreBtn onClick={handleClickLoadMore} />

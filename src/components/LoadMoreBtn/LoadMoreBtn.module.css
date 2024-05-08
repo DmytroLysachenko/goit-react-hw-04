@@ -3,15 +3,15 @@
   display: block;
   outline: none;
   box-shadow: none;
-  background-color: seashell;
+  background-color: silver;
   border: solid 1px gray;
   border-radius: 5px;
   padding: 5px 10px;
   margin: 50px auto;
   &:active {
-    box-shadow: gainsboro 1px 1px 1px 1px;
+    outline: solid 1px orange;
   }
   &:hover {
-    background-color: antiquewhite;
+    background-color: rgb(208, 208, 208);
   }
 }

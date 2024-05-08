@@ -5,7 +5,7 @@ export const ImageCard = ({ img, onClickImage }) => {
     <li className={s.item}>
       <img
         onClick={() => {
-          onClickImage(img.urls.regular);
+          onClickImage(img.urls.regular, img.description);
         }}
         className={s.img}
         src={img.urls.small}

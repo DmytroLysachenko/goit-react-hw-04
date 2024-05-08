@@ -1,5 +1,5 @@
 .header {
-  background-color: lightseagreen;
+  background-color: darkcyan;
   display: grid;
   justify-content: center;
   padding: 10px;
@@ -9,7 +9,16 @@
 }
 .input {
   padding: 5px 5px 5px 25px;
-  width: 160px;
+  width: 170px;
+  background-color: silver;
+  color: black;
+  border: solid 1px black;
+  border-radius: 5px;
+  box-shadow: 1px darkgrey;
+  outline: none;
+  &:focus {
+    outline: solid 1px lightblue;
+  }
 }
 .button {
   border: none;
