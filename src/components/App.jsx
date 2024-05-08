@@ -71,6 +71,7 @@ export const App = () => {
   const closeModal = () => {
     setIsOpen(false);
     setLargeImg("");
+    setDesc("");
   };
 
   return (
