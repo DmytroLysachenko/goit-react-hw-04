@@ -8,7 +8,7 @@ export const SearchBar = ({ handleSetQuery }) => {
       <Formik
         initialValues={{ query: "" }}
         onSubmit={(values) => {
-          handleSetQuery(values.query);
+          handleSetQuery(values.query.trim());
         }}
       >
         <Form className={s.form}>

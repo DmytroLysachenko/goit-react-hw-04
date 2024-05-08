@@ -2,8 +2,11 @@ import s from "./ImageCard.module.css";
 
 export const ImageCard = ({ img, onClickImage }) => {
   return (
-    <li onClick={() => onClickImage(img.urls.regular)} className={s.item}>
+    <li className={s.item}>
       <img
+        onClick={() => {
+          onClickImage(img.urls.regular);
+        }}
         className={s.img}
         src={img.urls.small}
         alt={img.description}
@@ -13,5 +16,3 @@ export const ImageCard = ({ img, onClickImage }) => {
     </li>
   );
 };
-
-/*  */

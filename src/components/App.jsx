@@ -6,6 +6,9 @@ import { SearchBar } from "./SearchBar/SearchBar";
 import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
 import { fetchImagesByQuery } from "../api/api";
 import { ImageModal } from "./ImageModal/ImageModal";
+import { ToastContainer, toast } from "react-toastify";
+import Modal from "react-modal";
+import "react-toastify/dist/ReactToastify.css";
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,40 +37,50 @@ export const App = () => {
   }, [query, page]);
 
   const handleSetQuery = (query) => {
-    setQuery(query);
-    setImages([]);
-    setPage(1);
+    if (query === "") {
+      toast.error("Ops, wrong input value. Try another one!", {
+        position: "top-right",
+        theme: "colored",
+      });
+      return;
+    }
+    setQuery((prev) => {
+      if (prev !== query) {
+        setImages([]);
+        setPage(1);
+      }
+      return query;
+    });
   };
 
   const handleClickLoadMore = () => {
     setPage((prev) => prev + 1);
   };
 
-  const onEscClose = (event) => {
-    if (event.key === "Escape") {
-      setLargeImg("");
-      window.removeEventListener("keydown", onEscClose);
-      document.body.removeEventListener("click", closeModalBackdrop);
-    }
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
   };
-  const closeModalBackdrop = (event) => {
-    if (event.target.id === "backdrop") {
-      setLargeImg("");
-      window.removeEventListener("keydown", onEscClose);
-      document.body.removeEventListener("click", closeModalBackdrop);
-    }
-  };
-  const closeModalBtn = (event) => {
-    if (event.currentTarget.id === "close-btn") {
-      setLargeImg("");
-      window.removeEventListener("keydown", onEscClose);
-      document.body.removeEventListener("click", closeModalBackdrop);
-    }
-  };
-  const openModal = (src) => {
+  const onClickImage = (src) => {
     setLargeImg(src);
-    window.addEventListener("keydown", onEscClose);
-    document.body.addEventListener("click", closeModalBackdrop);
+    openModal();
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setLargeImg("");
+  };
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
   };
 
   return (
@@ -76,12 +89,23 @@ export const App = () => {
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
       {images.length > 0 && (
-        <ImageGallery images={images} onClickImage={openModal} />
+        <ImageGallery images={images} onClickImage={onClickImage} />
       )}
-      {largeImg && <ImageModal src={largeImg} closeModalBtn={closeModalBtn} />}
+      {largeImg && (
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="Example Modal"
+          style={customStyles}
+        >
+          {" "}
+          <ImageModal src={largeImg} closeModalBtn={closeModal} />{" "}
+        </Modal>
+      )}
       {Math.ceil(total / 10) > page && (
         <LoadMoreBtn onClick={handleClickLoadMore} />
       )}
+      <ToastContainer />
     </>
   );
 };

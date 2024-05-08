@@ -1,19 +1,18 @@
-import { Backdrop } from "../Backdrop/Backdrop";
 import s from "./ImageModal.module.css";
 import { IoMdClose } from "react-icons/io";
 
-export const ImageModal = ({ src, alt, closeModalBtn }) => {
+export const ImageModal = ({ src, alt, closeModal }) => {
   return (
-    <Backdrop>
-      <img className={s.img} src={src} alt={alt} height="90%" />
+    <>
+      <img className={s.img} src={src} alt={alt} height="80%" width="auto" />
       <button
         id="close-btn"
         className={s.btn}
         type="button"
-        onClick={closeModalBtn}
+        onClick={closeModal}
       >
         <IoMdClose className={s.svg} color="white" />
       </button>
-    </Backdrop>
+    </>
   );
 };

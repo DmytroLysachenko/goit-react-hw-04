@@ -10,7 +10,6 @@
   box-shadow: 2px 4px rgba(0, 0, 0, 0.4);
   transition: transform 200ms ease-in-out;
   &:hover {
-    z-index: 999;
     cursor: pointer;
     transform: scale(1.1);
   }
