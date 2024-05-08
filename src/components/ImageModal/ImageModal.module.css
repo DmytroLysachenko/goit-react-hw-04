@@ -2,15 +2,18 @@
   cursor: pointer;
   padding: 0;
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 0;
+  top: 0;
   border: none;
   background: none;
 }
+
 .img {
-  max-width: 90%;
+  max-width: 95%;
+  max-height: 95%;
 }
+
 .svg {
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
 }

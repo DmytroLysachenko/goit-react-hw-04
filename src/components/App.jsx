@@ -16,6 +16,7 @@ export const App = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [images, setImages] = useState([]);
+  const [img, setImg] = useState({});
   const [total, setTotal] = useState(0);
   const [largeImg, setLargeImg] = useState("");
 
@@ -62,8 +63,9 @@ export const App = () => {
   const openModal = () => {
     setIsOpen(true);
   };
-  const onClickImage = (src) => {
+  const onClickImage = (src, auth, desc, likes) => {
     setLargeImg(src);
+    setImg({ auth, desc, likes });
     openModal();
   };
 
@@ -80,6 +82,10 @@ export const App = () => {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
+      display: "flex",
+      "justify-content": "center",
+      "max-height": "90%",
+      "max-width": "90%",
     },
   };
 
@@ -99,7 +105,7 @@ export const App = () => {
           style={customStyles}
         >
           {" "}
-          <ImageModal src={largeImg} closeModalBtn={closeModal} />{" "}
+          <ImageModal img={img} src={largeImg} closeModal={closeModal} />{" "}
         </Modal>
       )}
       {Math.ceil(total / 10) > page && (
